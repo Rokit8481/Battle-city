@@ -1,3 +1,4 @@
+
 # Бонус для гравця
 class Bonus(pygame.sprite.Sprite):
     def __init__(self, x, y, bonus_type):
