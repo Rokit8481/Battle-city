@@ -17,6 +17,19 @@ class PlayerTank(pygame.sprite.Sprite):
             "left":  pygame.transform.scale(PLAYER_IMAGES["upgraded_left"], (tile_size, tile_size)),
             "right": pygame.transform.scale(PLAYER_IMAGES["upgraded_right"], (tile_size, tile_size)),
         }
+        self.images_shield = { 
+            "up":    pygame.transform.scale(PLAYER_IMAGES["upgraded_up"], (tile_size, tile_size)),
+            "down":  pygame.transform.scale(PLAYER_IMAGES["upgraded_down"], (tile_size, tile_size)),
+            "left":  pygame.transform.scale(PLAYER_IMAGES["upgraded_left"], (tile_size, tile_size)),
+            "right": pygame.transform.scale(PLAYER_IMAGES["upgraded_right"], (tile_size, tile_size)),
+        }
+        self.images_fast = {
+            "up":    pygame.transform.scale(PLAYER_IMAGES["fast_up"], (tile_size, tile_size)),
+            "down":  pygame.transform.scale(PLAYER_IMAGES["fast_down"], (tile_size, tile_size)),
+            "left":  pygame.transform.scale(PLAYER_IMAGES["fast_left"], (tile_size, tile_size)),
+            "right": pygame.transform.scale(PLAYER_IMAGES["fast_right"], (tile_size, tile_size)),
+        }
+
 
         self.upgraded = False
         self.direction_name = "up"
@@ -29,40 +42,50 @@ class PlayerTank(pygame.sprite.Sprite):
         self.shield = False
         self.speed_boost = False
         self.lives = 3
-        self.bonus_duration = 5000
+        self.bonus_duration = 7500
         self.active_bonuses = []
 
     def add_bonus(self, bonus_type):
-        if len(self.active_bonuses) >= 3: 
+        if len(self.active_bonuses) >= 3:
             return
         self.active_bonuses.append((bonus_type, pygame.time.get_ticks()))
         if bonus_type == "speed":
             self.speed_boost = True
         elif bonus_type == "shield":
-            self.shield = True
+            self.shield = True  # тільки вигляд
         elif bonus_type == "upgrade":
-            self.upgraded = True
+            self.upgraded = True  # впливає і на вигляд, і на кулі
+
 
     def update(self):
         now = pygame.time.get_ticks()
         to_remove = []
+
         for bonus_type, start in self.active_bonuses:
             if now - start > self.bonus_duration:
-                if bonus_type == "speed":
-                    self.speed_boost = False
+                if bonus_type == "upgrade":
+                    self.upgraded = False
                 elif bonus_type == "shield":
                     self.shield = False
-                elif bonus_type == "upgrade":
-                    self.upgraded = False
+                elif bonus_type == "speed":
+                    self.speed_boost = False
                 to_remove.append((bonus_type, start))
+
         for b in to_remove:
             self.active_bonuses.remove(b)
 
-        # Оновлюємо зображення відповідно до напрямку та стану
-        self.image = (self.images_upgraded[self.direction_name]
-                      if self.upgraded else
-                      self.images_normal[self.direction_name])
-        self.rect.size = self.image.get_size()  # Переконатися, що rect завжди відповідає розміру
+        # Вибираємо зображення з пріоритетом: щит > апгрейд > швидкість > норм
+        if self.shield:
+            self.image = self.images_shield[self.direction_name]
+        elif self.upgraded:
+            self.image = self.images_upgraded[self.direction_name]
+        elif self.speed_boost:
+            self.image = self.images_fast[self.direction_name]
+        else:
+            self.image = self.images_normal[self.direction_name]
+
+        self.rect.size = self.image.get_size()
+
 
     def handle_keys(self, keys, walls, steel_walls):
         dx = dy = 0

@@ -30,7 +30,7 @@ class EnemyTank(pygame.sprite.Sprite):
         self.rect.inflate_ip(-10, -10)
 
         self.last_shot = pygame.time.get_ticks()
-        self.shot_cooldown = 3000
+        self.shot_cooldown = 1500
         self.last_dir_change = pygame.time.get_ticks()
         self.dir_change_interval = 2000
 
@@ -103,7 +103,7 @@ class EnemyTank(pygame.sprite.Sprite):
             direction = pygame.Vector2(0, 1 if ty > ey else -1)
             self.direction = direction
             self.direction_name = "down" if ty > ey else "up"
-            bullet = EnemyBullet(ex, ey, direction)
+            bullet = EnemyBullet(ex, ey, direction, self.walls_group, self.steel_walls_group)
             self.enemy_bullets.add(bullet)
             self.last_shot = now
             return
@@ -112,7 +112,7 @@ class EnemyTank(pygame.sprite.Sprite):
             direction = pygame.Vector2(1 if tx > ex else -1, 0)
             self.direction = direction
             self.direction_name = "right" if tx > ex else "left"
-            bullet = EnemyBullet(ex, ey, direction)
+            bullet = EnemyBullet(ex, ey, direction, self.walls_group, self.steel_walls_group)
             self.enemy_bullets.add(bullet)
             self.last_shot = now
 

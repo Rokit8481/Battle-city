@@ -41,6 +41,16 @@ class GameMap:
                 elif tile == "D":
                     self.bonuses.add(Bonus(x, y, "speed"))
 
+    def get_enemy_spawns(self):
+        enemy_positions = []
+        for row_idx, row in enumerate(self.level_map):
+            for col_idx, tile in enumerate(row):
+                if tile == "E":
+                    x = col_idx * self.tile_size + self.x_offset
+                    y = row_idx * self.tile_size + self.y_offset
+                    enemy_positions.append((x, y))
+        return enemy_positions
+
     def draw(self, screen):
         # Малюємо ґрунт
         for row in range(self.rows):
