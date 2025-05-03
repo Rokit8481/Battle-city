@@ -1,27 +1,22 @@
+# bonus.py
+import pygame
+from assets import BONUS_IMAGES
 
-# Бонус для гравця
 class Bonus(pygame.sprite.Sprite):
     def __init__(self, x, y, bonus_type):
         super().__init__()
-        self.image = pygame.Surface((30, 30))
-        self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
-        self.type = bonus_type  # Наприклад: "shield", "speed", "extra_life"
-
-        # Кольори бонусів для зручності
-        if bonus_type == "shield":
-            self.image.fill((0, 255, 255))  # Бірюзовий
-        elif bonus_type == "speed":
-            self.image.fill((255, 0, 255))  # Фіолетовий
-        elif bonus_type == "extra_life":
-            self.image.fill((255, 255, 255))  # Білий
-        else:
-            self.image.fill((128, 128, 128))  # Сірий (невідомий бонус)
+        self.type = bonus_type
+        self.image = BONUS_IMAGES.get(bonus_type, pygame.Surface((30,30)))
+        self.image = pygame.transform.scale(self.image, (20,20))
+        self.rect = self.image.get_rect(center=(x + 20, y + 20))
 
     def apply_bonus(self, player):
         if self.type == "shield":
-            player.shield = True
-        elif self.type == "speed":
-            player.speed_boost = True
+            player.add_bonus("shield")
+        elif self.type == "bullet_upgrade":
+            player.add_bonus("upgrade")
         elif self.type == "extra_life":
             player.lives += 1
+        elif self.type == "speed":
+            player.add_bonus("speed")
+
