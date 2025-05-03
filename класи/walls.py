@@ -9,10 +9,10 @@ class Wall(pygame.sprite.Sprite):
         self.damaged_image = pygame.transform.scale(WALL_DAMAGED_IMAGE, (tile_size, tile_size))
         self.image = self.full_image
         self.rect = self.image.get_rect(topleft=(x, y))
-        self.max_health = 100
+        self.max_health = 2
         self.health = self.max_health
 
-    def hit(self, damage=50):
+    def hit(self, damage = 1):
         if self.health > 0:
             self.health -= damage
 

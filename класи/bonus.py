@@ -19,4 +19,3 @@ class Bonus(pygame.sprite.Sprite):
             player.lives += 1
         elif self.type == "speed":
             player.add_bonus("speed")
-
