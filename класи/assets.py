@@ -10,7 +10,9 @@ def load_image(path):
     return _image_cache[path]
 
 SCREEN_WIDTH = 960
+
 SCREEN_HEIGHT = 720
+
 # Заздалегідь підвантажуємо всі потрібні ресурси
 PLAYER_IMAGES = {
     "up":    load_image("sprites/player_up.png"),
@@ -36,13 +38,24 @@ ENEMY_IMAGES = {
         "right":  load_image("sprites/enemy_normal_right.png")
     },
 }
+
+TITLE_IMAGE = {
+    "title":    load_image("sprites/title_bg.png")
+} 
+
 BULLET_IMAGES = {
     "normal": load_image("sprites/bullet_normal.png"),
-    "upgraded": load_image("sprites/bullet_upgraded.png")
+    "upgraded": load_image("sprites/bullet_upgraded.png"),
+    "normal_icon": load_image("sprites/icon_bullet_normal.png"),
+    "upgraded_icon": load_image("sprites/icon_bullet_upgraded.png")
 }
+
 WALL_IMAGE = load_image("sprites/wall.png")
+
 WALL_DAMAGED_IMAGE = load_image("sprites/wall_damaged.png")
+
 STEEL_WALL_IMAGE = load_image("sprites/steel_wall.png")
+
 BONUS_IMAGES = {
     "heart":         load_image("sprites/heart_icon.png"),
     "shield":        load_image("sprites/bonus_shield.png"),
@@ -50,4 +63,5 @@ BONUS_IMAGES = {
     "extra_life":    load_image("sprites/bonus_extra_life.png"),
     "speed":         load_image("sprites/bonus_speed.png")
 }
+
 TERRAIN_IMAGE = load_image("sprites/floor.png")

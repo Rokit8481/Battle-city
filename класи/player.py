@@ -46,21 +46,22 @@ class PlayerTank(pygame.sprite.Sprite):
         self.active_bonuses = []
 
     def add_bonus(self, bonus_type):
-        if len(self.active_bonuses) >= 3:
+        # Only allow one active bonus (except for extra life)
+        if len(self.active_bonuses) > 0 and bonus_type != "extra_life":
             return
         self.active_bonuses.append((bonus_type, pygame.time.get_ticks()))
         if bonus_type == "speed":
             self.speed_boost = True
         elif bonus_type == "shield":
-            self.shield = True  # тільки вигляд
+            self.shield = True
         elif bonus_type == "upgrade":
-            self.upgraded = True  # впливає і на вигляд, і на кулі
+            self.upgraded = True
+        self.bonus_start_time = pygame.time.get_ticks()
 
 
     def update(self):
         now = pygame.time.get_ticks()
         to_remove = []
-
         for bonus_type, start in self.active_bonuses:
             if now - start > self.bonus_duration:
                 if bonus_type == "upgrade":
@@ -70,11 +71,10 @@ class PlayerTank(pygame.sprite.Sprite):
                 elif bonus_type == "speed":
                     self.speed_boost = False
                 to_remove.append((bonus_type, start))
-
         for b in to_remove:
             self.active_bonuses.remove(b)
 
-        # Вибираємо зображення з пріоритетом: щит > апгрейд > швидкість > норм
+        # Image priority: shield > upgrade > speed > normal
         if self.shield:
             self.image = self.images_shield[self.direction_name]
         elif self.upgraded:
@@ -83,7 +83,7 @@ class PlayerTank(pygame.sprite.Sprite):
             self.image = self.images_fast[self.direction_name]
         else:
             self.image = self.images_normal[self.direction_name]
-
+        
         self.rect.size = self.image.get_size()
 
 

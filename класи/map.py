@@ -3,7 +3,7 @@ import pygame
 from walls import Wall, SteelWall
 from bonus import Bonus
 from assets import TERRAIN_IMAGE, SCREEN_WIDTH, SCREEN_HEIGHT
-from level1 import level_map  # дані рівня
+from levels import level_map  # дані рівня
 
 class GameMap:
     def __init__(self, level_map):
