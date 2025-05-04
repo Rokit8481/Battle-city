@@ -1,5 +1,7 @@
+#walls.py
+
 import pygame
-from assets import WALL_IMAGE, WALL_DAMAGED_IMAGE, STEEL_WALL_IMAGE
+from assets import WALL_IMAGE, WALL_DAMAGED_IMAGE, STEEL_WALL_IMAGE, sounds
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, x, y, tile_size):
@@ -15,6 +17,11 @@ class Wall(pygame.sprite.Sprite):
     def hit(self, damage = 1):
         if self.health > 0:
             self.health -= damage
+            sounds["play"]("hit_wall")
+
+        if self.health <= 0:
+            sounds["play"]("wall_break")
+            self.kill()
 
     def update(self):
         if self.health <= 0:
@@ -30,4 +37,4 @@ class SteelWall(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))
 
     def hit(self):
-        pass  # Стіна не пошкоджується
+        sounds["play"]("hit_metal")

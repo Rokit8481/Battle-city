@@ -1,14 +1,16 @@
+#game.py
+
 import pygame
 pygame.init()
 
 SCREEN_WIDTH = 960
-SCREEN_HEIGHT = 720
+SCREEN_HEIGHT = 720 
 UI_PANEL_HEIGHT = 100
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT + UI_PANEL_HEIGHT))
 pygame.display.set_caption("Battle City")
 
 from levels import level_map, level2, level3, level4, level5, level6, level7, level8, level9, level10
-from assets import TERRAIN_IMAGE, BONUS_IMAGES, BULLET_IMAGES
+from assets import TERRAIN_IMAGE, BONUS_IMAGES, BULLET_IMAGES, sounds
 from player import PlayerTank
 from enemy import EnemyTank
 from bullets import PlayerBullet
@@ -27,6 +29,10 @@ class Game:
 
         self.background = pygame.transform.scale(TERRAIN_IMAGE, (SCREEN_WIDTH, SCREEN_HEIGHT + UI_PANEL_HEIGHT))
         self.screens = Screens(self.screen, game_reference=self)
+        if self.screens.music_on:
+            sounds['play']('background', loops=-1)
+
+
 
         self.player = None
         self.enemies = pygame.sprite.Group()
@@ -83,6 +89,7 @@ class Game:
                 self.running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    sounds['play']('shoot')
                     bullet = PlayerBullet(
                         self.player.rect.centerx, self.player.rect.centery,
                         self.player.direction,
@@ -93,6 +100,7 @@ class Game:
                     self.player_bullets.add(bullet)
 
         self.player.handle_keys(keys, self.map.walls, self.map.steel_walls)
+
 
     def draw_ui(self):
         panel_y = SCREEN_HEIGHT
@@ -132,6 +140,7 @@ class Game:
 
         collided_bonuses = pygame.sprite.spritecollide(self.player, self.map.bonuses, dokill=True)
         for bonus in collided_bonuses:
+            sounds['play']('bonus')  # Використовуємо новий виклик для програвання звуку бонусу
             bonus.apply_bonus(self.player)
 
         hits = pygame.sprite.groupcollide(self.player_bullets, self.enemies, True, False)
@@ -155,9 +164,13 @@ class Game:
         if not self.enemies:
             self.end_game("You Win")
 
+
+
+
     def end_game(self, result):
         self.playing = False
         if result == "Game Over":
+            sounds['play']('hit_tank')  # Використовуємо звук для гри "Game Over"
             self.screens.show_game_over_screen()
         else:
             if self.level_index < len(LEVELS) - 1:
@@ -166,6 +179,7 @@ class Game:
                 self.new(self.level_index + 1)
             else:
                 self.screens.show_win_screen()
+
 
     def draw(self):
         self.screen.blit(self.background, (0, 0))

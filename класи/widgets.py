@@ -1,5 +1,7 @@
+#widgets.py
+
 import pygame
-from assets import TITLE_IMAGE
+from assets import TITLE_IMAGE, sounds
 
 
 WHITE = (255, 255, 255)
@@ -56,6 +58,8 @@ class Screens:
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.selected_level = 1
+        self.music_on = True
+        self.sfx_on = True
         self.game = game_reference
 
     def wait_for_key(self):
@@ -69,7 +73,6 @@ class Screens:
             self.clock.tick(self.fps)
 
     def show_next_level_screen(self, level):
-        # This method will handle showing the next level screen
         level_up_btn = Button(self.screen, (self.screen.get_width() // 2, 300), (250, 50), f"Наступний рівень ({level})", 30, WHITE)
         menu_btn = Button(self.screen, (self.screen.get_width() // 2, 370), (250, 50), "МЕНЮ", 30, WHITE)
         quit_btn = Button(self.screen, (self.screen.get_width() // 2, 440), (250, 50), "ВИХІД", 30, WHITE)
@@ -89,7 +92,7 @@ class Screens:
                     exit()
                 if level_up_btn.click(event):
                     if self.game:
-                        self.game.new(level)  # Pass the next level to start it
+                        self.game.new(level) 
                     return
                 if menu_btn.click(event):
                     self.show_start_screen()
@@ -101,15 +104,25 @@ class Screens:
 
 
     def draw_title_image(self):
-        title_image = pygame.transform.scale(TITLE_IMAGE["title"], (500, 150))
+        title_image = pygame.transform.scale(TITLE_IMAGE["title"], (300, 100))
         title_rect = title_image.get_rect(center=(self.screen.get_width() // 2, 120))
         self.screen.blit(title_image, title_rect)
+
+    def toggle_music(self):
+        self.music_on = not self.music_on
+        if self.music_on:
+            sounds['raw']['background'].play(loops=-1)
+        else:
+            sounds['raw']['background'].stop()
+
+
 
     def show_start_screen(self):
         start_btn = Button(self.screen, (self.screen.get_width() // 2, 300), (250, 60), "ГРАТИ", 36, WHITE)
         level_btn = Button(self.screen, (self.screen.get_width() // 2, 380), (250, 50), "ВИБІР РІВНЯ", 30, GRAY)
         exit_btn = Button(self.screen, (self.screen.get_width() // 2, 460), (250, 50), "ВИХІД", 30, GRAY)
-        buttons = [start_btn, level_btn, exit_btn]
+        music_btn = Button(self.screen, (self.screen.get_width() // 2, 540), (250, 50), "МУЗИКА: ВКЛ", 30, WHITE)
+        buttons = [start_btn, level_btn, exit_btn, music_btn]
 
         while True:
             self.screen.fill(BLACK)
@@ -132,8 +145,12 @@ class Screens:
                     exit()
             self.clock.tick(self.fps)
 
+            if music_btn.click(event):
+                self.toggle_music()
+                music_btn.text = f"МУЗИКА: {'ВКЛ' if self.music_on else 'ВИКЛ'}"
+
+
     def show_level_selection(self):
-        selected_level = 1
         buttons = []
         for i in range(10):
             x = 160 + (i % 5) * 130

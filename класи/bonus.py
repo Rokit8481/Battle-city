@@ -1,4 +1,5 @@
 # bonus.py
+
 import pygame
 from assets import BONUS_IMAGES
 

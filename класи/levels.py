@@ -4,7 +4,7 @@ level_map = [
     "SSSSSSSSSSSSSSSSSS",
     "S  G   WWWWWW   G S",
     "S WEW   E  E   WE S",
-    "S W WWWWW  WWWWW W S",
+    "S W WWWWW  WWWWWW S",
     "S W   D    L    W S",
     "S WWWW   WW   WWW S",
     "S W   WWWWWWWW  W S",
@@ -18,82 +18,82 @@ level_map = [
 
 level2 = [
     "SSSSSSSSSSSSSSSSSS",
-    "S E   W   G   W  E S",
+    "S E   W   G   W  ES",
     "S WWW WWWWWWW WWW S",
     "S W  W       W  W S",
     "S W TW   D   WL W S",
     "S W  W       W  W S",
     "S WWW WWWWWWW WWW S",
-    "S E   W   G   W  E S",
-    "S   S    S    S    S",
-    "S                S",
+    "S E   W   G   W  ES",
+    "S   S    S    S   S",
+    "S                 S",
     "S      G     G    S",
-    "S                S",
+    "S                 S",
     "SSSSSSSSSSSSSSSSSS"
 ]
 
 level3 = [
-    "WWWWWWWWWWWWWWWWWW",
-    "W E     WWWW     E W",
-    "W WWWW  W  W  WWWW W",
-    "W W  G  W  W  G  W W",
-    "W W WWWWW  WWWWW W W",
-    "W W     D  T     W W",
-    "W W WWWWW  WWWWW W W",
-    "W W  G  W  W  G  W W",
-    "W WWWW  W  W  WWWW W",
-    "W E     WWWW     E W",
-    "W      S    S      W",
-    "W                G W",
-    "WWWWWWWWWWWWWWWWWWWW"
+    "SSSSSSSSSSSSSSSSSSSS",
+    "S E     WWWW     E S",
+    "S WWWW  W  W  WWWW S",
+    "S W  G  W  W  G  W S",
+    "S W WWWWW  WWWWW W S",
+    "S W     D  T     W S",
+    "S W WWWWW  WWWWW W S",
+    "S W  G  W  W  G  W S",
+    "S WWWW  W  W  WWWW S",
+    "S E     WWWW     E S",
+    "S      S    S      S",
+    "S                G S",
+    "SSSSSSSSSSSSSSSSSSSS"
 ]
 
 level4 = [
-    "SSSSSSSSSSSSSSSSSS",
+    "SSSSSSSSSSSSSSSSSSS",
     "S  E   WGGGW   E  S",
     "S WWWW WWWWWW WWW S",
     "S W  T   D    L W S",
     "S WWWW WWWWWW WWW S",
-    "S W    W    W    W S",
-    "S W WW WWWW WW W W S",
-    "S W W        W W W S",
-    "S WWWWWWWWWWWWWWWS S",
+    "S W    W    W    WS",
+    "S W WW WWWW WW W WS",
+    "S W W        W W WS",
+    "S WWWWWWWWWWWWWWWSS",
     "S        S        S",
     "S    G        G   S",
-    "S                S",
-    "SSSSSSSSSSSSSSSSSS"
+    "S                 S",
+    "SSSSSSSSSSSSSSSSSSS"
 ]
 
 level5 = [
-    "WWWWWWWWWWWWWWWWWW",
-    "W E   WWWWWWWW  E W",
-    "W WWW W      W WWW W",
-    "W W T   D  L   T W W",
-    "W WWW WWWWWW WWWWW W",
-    "W     W  G   W     W",
-    "W WWW WWWWWWWW WWW W",
-    "W W    G     G   W W",
-    "W W WWWW    WWWW W W",
-    "W E      S      E W",
-    "W      S    S     W",
-    "W                G W",
-    "WWWWWWWWWWWWWWWWWWWW"
+    "SSSSSSSSSSSSSSSSSSSS",
+    "S E   WWWWWWWW  E  S",
+    "S WWW W      W WWW S",
+    "S W T   D  L   T W s",
+    "S WWW WWWWWW WWWWW S",
+    "S     W  G   W     S",
+    "S WWW WWWWWWWW WWW S",
+    "S W    G     G   W S",
+    "S W WWWW    WWWW W S",
+    "S E      S      E  S",
+    "S      S    S      S",
+    "S                G S",
+    "SSSSSSSSSSSSSSSSSSSS"
 ]
 
 level6 = [
-    "SSSSSSSSSSSSSSSSSS",
-    "S  E   T W T   E  S",
-    "S WWW WWWWWWWW WWW S",
+    "SSSSSSSSSSSSSSSSSSSSS",
+    "S  E   T W T   E    S",
+    "S WWW WWWWWWWW WWW  S",
     "S W D   G   G   D W S",
     "S WWWW WWW WWWW WWW S",
     "S W    W     W    W S",
-    "S W WW WWWWWW WW W S",
-    "S W W   G G    W W S",
-    "S WWWW WWWWWW WWWW S",
-    "S   S    L    S    S",
-    "S     E      E     S",
-    "S     G      G     S",
-    "SSSSSSSSSSSSSSSSSS"
+    "S W WW WWWWWW WW W  S",
+    "S W W   G G    W W  S",
+    "S WWWW WWWWWW WWWW  S",
+    "S   S    L    S     S",
+    "S     E      E      S",
+    "S     G      G      S",
+    "SSSSSSSSSSSSSSSSSSSSS"
 ]
 
 level7 = [
@@ -109,7 +109,7 @@ level7 = [
     "W   S     S     S  W",
     "W        E         W",
     "W   G           G  W",
-    "WWWWWWWWWWWWWWWWWWWW"
+    "SSSSSSSSSSSSSSSSSSSS"
 ]
 
 level8 = [
@@ -141,7 +141,7 @@ level9 = [
     "W   S     S     S  W",
     "W     E       E    W",
     "W         G        W",
-    "WWWWWWWWWWWWWWWWWWWW"
+    "SSSSSSSSSSSSSSSSSSSS"
 ]
 
 level10 = [

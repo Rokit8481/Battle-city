@@ -1,5 +1,7 @@
+#player.py
+
 import pygame
-from assets import PLAYER_IMAGES, SCREEN_WIDTH, SCREEN_HEIGHT
+from assets import PLAYER_IMAGES, SCREEN_WIDTH, SCREEN_HEIGHT, sounds
 
 class PlayerTank(pygame.sprite.Sprite):
     def __init__(self, x, y, tile_size):
@@ -32,21 +34,26 @@ class PlayerTank(pygame.sprite.Sprite):
 
 
         self.upgraded = False
+        self.speed_boost = False
+        self.shield = False
         self.direction_name = "up"
         self.image = self.images_normal[self.direction_name]
         self.rect = self.image.get_rect(topleft=(x, y))  # Початкова позиція
 
         self.step = tile_size // 10
-        self.speed = self.step
+        self.speed = self.step if self.speed_boost == False else self.step * 2
 
-        self.shield = False
-        self.speed_boost = False
+        
+        
         self.lives = 3
         self.bonus_duration = 7500
         self.active_bonuses = []
 
+    def hit(self, damage):
+        self.health -= damage
+        sounds["play"]("hit_tank")  # Звук при попаданні по танку
+
     def add_bonus(self, bonus_type):
-        # Only allow one active bonus (except for extra life)
         if len(self.active_bonuses) > 0 and bonus_type != "extra_life":
             return
         self.active_bonuses.append((bonus_type, pygame.time.get_ticks()))
@@ -74,7 +81,7 @@ class PlayerTank(pygame.sprite.Sprite):
         for b in to_remove:
             self.active_bonuses.remove(b)
 
-        # Image priority: shield > upgrade > speed > normal
+        #shield > upgrade > speed > normal
         if self.shield:
             self.image = self.images_shield[self.direction_name]
         elif self.upgraded:
@@ -93,28 +100,35 @@ class PlayerTank(pygame.sprite.Sprite):
             dx = -self.speed
             self.direction = pygame.Vector2(-1, 0)
             self.direction_name = "left"
+            sounds["play"]("move")  # Звук руху
         elif keys[pygame.K_RIGHT]:
             dx = self.speed
             self.direction = pygame.Vector2(1, 0)
             self.direction_name = "right"
+            sounds["play"]("move")  # Звук руху
         elif keys[pygame.K_UP]:
             dy = -self.speed
             self.direction = pygame.Vector2(0, -1)
             self.direction_name = "up"
+            sounds["play"]("move")  # Звук руху
         elif keys[pygame.K_DOWN]:
             dy = self.speed
             self.direction = pygame.Vector2(0, 1)
             self.direction_name = "down"
+            sounds["play"]("move")  # Звук руху
 
         original_pos = self.rect.topleft
         self.rect.x += dx
         self.rect.y += dy
 
+        # Обмеження на екран
         if self.rect.left < 0: self.rect.left = 0
         if self.rect.right > SCREEN_WIDTH: self.rect.right = SCREEN_WIDTH
         if self.rect.top < 0: self.rect.top = 0
         if self.rect.bottom > SCREEN_HEIGHT: self.rect.bottom = SCREEN_HEIGHT
 
+        # Перевірка зіткнення з іншими об'єктами (стіни)
         if (pygame.sprite.spritecollide(self, walls, False) or 
             pygame.sprite.spritecollide(self, steel_walls, False)):
             self.rect.topleft = original_pos
+

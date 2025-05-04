@@ -1,9 +1,9 @@
 # map.py
+
 import pygame
 from walls import Wall, SteelWall
 from bonus import Bonus
 from assets import TERRAIN_IMAGE, SCREEN_WIDTH, SCREEN_HEIGHT
-from levels import level_map  # дані рівня
 
 class GameMap:
     def __init__(self, level_map):
@@ -62,7 +62,6 @@ class GameMap:
         self.walls.draw(screen)
         self.steel_walls.draw(screen)
         self.bonuses.draw(screen)
-        # (опційно) малюнок сітки
         self.draw_grid(screen)
 
     def update(self):
@@ -70,7 +69,6 @@ class GameMap:
         self.bonuses.update()
 
     def draw_grid(self, screen):
-        # Показати сітку клітин (для відладки)
         for x in range(self.x_offset, self.x_offset + self.map_width, self.tile_size):
             pygame.draw.line(screen, (100,100,100), (x, 0), (x, SCREEN_HEIGHT))
         for y in range(self.y_offset, self.y_offset + self.map_height, self.tile_size):

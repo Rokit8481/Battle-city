@@ -1,5 +1,7 @@
+#bullets.py
+
 import pygame
-from assets import BULLET_IMAGES, SCREEN_WIDTH, SCREEN_HEIGHT
+from assets import BULLET_IMAGES, SCREEN_WIDTH, SCREEN_HEIGHT, sounds
 
 TILE_SIZE = 40
 BULLET_WIDTH = TILE_SIZE // 4
@@ -26,18 +28,22 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(scaled_image, angle)
         self.rect = self.image.get_rect(center=(x, y))
 
+        sounds['play']('shoot')
+
     def update(self):
         self.rect.x += self.direction.x * self.speed
         self.rect.y += self.direction.y * self.speed
 
         # Перевірка зіткнення з цегляними стінами
         for wall in pygame.sprite.spritecollide(self, self.walls_group, False):
+            sounds['play']('hit_wall')
             wall.hit(self.damage)
             self.kill()
             return
 
         # Перевірка зіткнення з сталевими стінами
         if pygame.sprite.spritecollideany(self, self.steel_walls_group):
+            sounds['play']('hit_metal')
             self.kill()
             return
 

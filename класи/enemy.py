@@ -1,5 +1,5 @@
 import pygame, random
-from assets import ENEMY_IMAGES, SCREEN_WIDTH, SCREEN_HEIGHT
+from assets import ENEMY_IMAGES, SCREEN_WIDTH, SCREEN_HEIGHT, sounds
 from bullets import EnemyBullet
 
 class EnemyTank(pygame.sprite.Sprite):
@@ -16,7 +16,6 @@ class EnemyTank(pygame.sprite.Sprite):
         self.speed = 2 if enemy_type == "fast" else 1
         self.health = 3 if enemy_type == "armored" else 1
 
-        # Масштабуємо всі зображення ворога
         original_images = ENEMY_IMAGES[enemy_type]
         self.images = {
             dir_name: pygame.transform.scale(img, (tile_size, tile_size))
@@ -106,6 +105,7 @@ class EnemyTank(pygame.sprite.Sprite):
             bullet = EnemyBullet(ex, ey, direction, self.walls_group, self.steel_walls_group)
             self.enemy_bullets.add(bullet)
             self.last_shot = now
+            sounds["play"]("shoot")
             return
 
         if abs(ty - ey) < 10:
@@ -115,8 +115,11 @@ class EnemyTank(pygame.sprite.Sprite):
             bullet = EnemyBullet(ex, ey, direction, self.walls_group, self.steel_walls_group)
             self.enemy_bullets.add(bullet)
             self.last_shot = now
+            sounds["play"]("shoot")
 
     def hit(self, damage):
         self.health -= damage
+        sounds["play"]("hit_tank")  # Звук при попаданні в танк
+
         if self.health <= 0:
-            self.kill()
+            self.kill()  # Вилучення танка після знищення
