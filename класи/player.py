@@ -42,13 +42,18 @@ class PlayerTank(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))  # Початкова позиція
 
         self.step = tile_size // 10
-        self.speed = self.step if self.speed_boost == False else self.step * 2
+        self.speed = self.step
 
-        
-        
         self.lives = 3
         self.bonus_duration = 7500
         self.active_bonuses = []
+
+    def change_speed(self, speed_boost):
+        self.speed_boost = speed_boost
+        if self.speed_boost:
+            self.speed = self.step * 1.5
+        else:
+            self.speed = self.step
 
     def hit(self, damage):
         self.health -= damage
@@ -59,7 +64,7 @@ class PlayerTank(pygame.sprite.Sprite):
             return
         self.active_bonuses.append((bonus_type, pygame.time.get_ticks()))
         if bonus_type == "speed":
-            self.speed_boost = True
+            self.change_speed(True)
         elif bonus_type == "shield":
             self.shield = True
         elif bonus_type == "upgrade":
