@@ -32,8 +32,6 @@ class Game:
         if self.screens.music_on:
             sounds['play']('background', loops=-1)
 
-
-
         self.player = None
         self.enemies = pygame.sprite.Group()
         self.player_bullets = pygame.sprite.Group()
@@ -108,7 +106,7 @@ class Game:
         heart_icon = pygame.transform.scale(BONUS_IMAGES["heart"], (30, 30))
         self.screen.blit(heart_icon, (10, panel_y + 10))
         self.draw_text(f"x {self.player.lives}", 24, 50, panel_y + 15)
- 
+
         if self.player.active_bonuses:
             bonus_type, start_time = self.player.active_bonuses[0]  # Only check the first active bonus
             elapsed_time = pygame.time.get_ticks() - start_time
@@ -162,9 +160,6 @@ class Game:
 
         if not self.enemies:
             self.end_game("You Win")
-
-
-
 
     def end_game(self, result):
         self.playing = False

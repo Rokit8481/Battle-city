@@ -36,10 +36,10 @@ class PlayerTank(pygame.sprite.Sprite):
         self.upgraded = False
         self.speed_boost = False
         self.shield = False
-        self.direction = pygame.Vector2(0, 1)  # вниз
+        self.direction = pygame.Vector2(0, 1)
         self.direction_name = "down"
         self.image = self.images_normal[self.direction_name]   
-        self.rect = self.image.get_rect(topleft=(x, y))  # Початкова позиція
+        self.rect = self.image.get_rect(topleft=(x, y))
 
         self.step = tile_size // 10
         self.speed = self.step
@@ -82,7 +82,7 @@ class PlayerTank(pygame.sprite.Sprite):
                 elif bonus_type == "shield":
                     self.shield = False
                 elif bonus_type == "speed":
-                    self.speed_boost = False
+                    self.change_speed(False)
                 to_remove.append((bonus_type, start))
         for b in to_remove:
             self.active_bonuses.remove(b)
