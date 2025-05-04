@@ -101,7 +101,6 @@ class Game:
 
         self.player.handle_keys(keys, self.map.walls, self.map.steel_walls)
 
-
     def draw_ui(self):
         panel_y = SCREEN_HEIGHT
         pygame.draw.rect(self.screen, (40, 40, 40), (0, panel_y, SCREEN_WIDTH, 100))

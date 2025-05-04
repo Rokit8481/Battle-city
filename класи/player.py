@@ -36,8 +36,9 @@ class PlayerTank(pygame.sprite.Sprite):
         self.upgraded = False
         self.speed_boost = False
         self.shield = False
-        self.direction_name = "up"
-        self.image = self.images_normal[self.direction_name]
+        self.direction = pygame.Vector2(0, 1)  # вниз
+        self.direction_name = "down"
+        self.image = self.images_normal[self.direction_name]   
         self.rect = self.image.get_rect(topleft=(x, y))  # Початкова позиція
 
         self.step = tile_size // 10
@@ -96,39 +97,38 @@ class PlayerTank(pygame.sprite.Sprite):
 
     def handle_keys(self, keys, walls, steel_walls):
         dx = dy = 0
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_a]:
             dx = -self.speed
             self.direction = pygame.Vector2(-1, 0)
             self.direction_name = "left"
-            sounds["play"]("move")  # Звук руху
-        elif keys[pygame.K_RIGHT]:
+            sounds["play"]("move")
+        elif keys[pygame.K_d]:
             dx = self.speed
             self.direction = pygame.Vector2(1, 0)
             self.direction_name = "right"
-            sounds["play"]("move")  # Звук руху
-        elif keys[pygame.K_UP]:
+            sounds["play"]("move")
+        elif keys[pygame.K_w]:
             dy = -self.speed
             self.direction = pygame.Vector2(0, -1)
             self.direction_name = "up"
-            sounds["play"]("move")  # Звук руху
-        elif keys[pygame.K_DOWN]:
+            sounds["play"]("move")
+        elif keys[pygame.K_s]:
             dy = self.speed
             self.direction = pygame.Vector2(0, 1)
             self.direction_name = "down"
-            sounds["play"]("move")  # Звук руху
+            sounds["play"]("move")
 
         original_pos = self.rect.topleft
         self.rect.x += dx
         self.rect.y += dy
 
-        # Обмеження на екран
         if self.rect.left < 0: self.rect.left = 0
         if self.rect.right > SCREEN_WIDTH: self.rect.right = SCREEN_WIDTH
         if self.rect.top < 0: self.rect.top = 0
         if self.rect.bottom > SCREEN_HEIGHT: self.rect.bottom = SCREEN_HEIGHT
 
-        # Перевірка зіткнення з іншими об'єктами (стіни)
         if (pygame.sprite.spritecollide(self, walls, False) or 
             pygame.sprite.spritecollide(self, steel_walls, False)):
             self.rect.topleft = original_pos
+
 

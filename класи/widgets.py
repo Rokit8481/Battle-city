@@ -138,6 +138,9 @@ class Screens:
                     if self.game:
                         self.game.new(self.selected_level)
                     return
+                if music_btn.click(event):
+                    self.toggle_music()
+                    music_btn.text = f"МУЗИКА: {'ВКЛ' if self.music_on else 'ВИКЛ'}"
                 if level_btn.click(event):
                     self.show_level_selection()
                 if exit_btn.click(event):
@@ -145,9 +148,6 @@ class Screens:
                     exit()
             self.clock.tick(self.fps)
 
-            if music_btn.click(event):
-                self.toggle_music()
-                music_btn.text = f"МУЗИКА: {'ВКЛ' if self.music_on else 'ВИКЛ'}"
 
 
     def show_level_selection(self):
