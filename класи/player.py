@@ -102,26 +102,34 @@ class PlayerTank(pygame.sprite.Sprite):
 
     def handle_keys(self, keys, walls, steel_walls):
         dx = dy = 0
+        moved = False
+
         if keys[pygame.K_a]:
             dx = -self.speed
             self.direction = pygame.Vector2(-1, 0)
             self.direction_name = "left"
-            sounds["play"]("move")
+            moved = True
         elif keys[pygame.K_d]:
             dx = self.speed
             self.direction = pygame.Vector2(1, 0)
             self.direction_name = "right"
-            sounds["play"]("move")
+            moved = True
         elif keys[pygame.K_w]:
             dy = -self.speed
             self.direction = pygame.Vector2(0, -1)
             self.direction_name = "up"
-            sounds["play"]("move")
+            moved = True
         elif keys[pygame.K_s]:
             dy = self.speed
             self.direction = pygame.Vector2(0, 1)
             self.direction_name = "down"
+            moved = True
+
+        # Звук руху
+        if moved:
             sounds["play"]("move")
+        else:
+            sounds["stop"]("move")  
 
         original_pos = self.rect.topleft
         self.rect.x += dx

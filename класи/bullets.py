@@ -18,7 +18,7 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction, damage, image, walls_group, steel_walls_group):
         super().__init__()
         self.direction = direction
-        self.speed = 5
+        self.speed = 3
         self.damage = damage
         self.walls_group = walls_group
         self.steel_walls_group = steel_walls_group

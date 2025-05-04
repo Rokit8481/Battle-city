@@ -4,8 +4,7 @@ import pygame
 
 pygame.mixer.init()
 
-import threading
-
+_sound_channels = {}
 _image_cache = {}
 
 def load_image(path):
@@ -70,7 +69,7 @@ BONUS_IMAGES = {
 TERRAIN_IMAGE = load_image("sprites/floor.png")
 
 
-_raw_sounds = {
+raw_sounds = {
     'background': pygame.mixer.Sound('sounds/background.wav'),  
     'move': pygame.mixer.Sound('sounds/move.wav'),
     'shoot': pygame.mixer.Sound('sounds/shoot.wav'),
@@ -81,46 +80,47 @@ _raw_sounds = {
     'wall_break': pygame.mixer.Sound('sounds/wall_break.wav'),
 }
 
-SOUND_DURATIONS = {
-    'move': 300,
-    'shoot': 200,
-    'hit_tank': 200,
-    'hit_wall': 200,
-    'hit_metal': 300,
-    'bonus': 400,
-    'wall_break': 500,
-}
+
 
 VOLUMES = {
-    'move': 0.100,
+    'move': 0.090,
     'shoot': 0.050,
-    'hit_tank': 0.150,
+    'hit_tank': 0.075,
     'hit_wall': 0.075,
-    'hit_metal': 0.2,
+    'hit_metal': 0.075,
     'background': 0.175,
-    'bonus': 0.100,
-    'wall_break': 0.125
+    'bonus': 0.075,
+    'wall_break': 0.100
     }
 
-for name, sound in _raw_sounds.items():
+for name, sound in raw_sounds.items():
     vol = VOLUMES.get(name, 1.0)
     sound.set_volume(vol)
 
-def play_sound(name, loops=0):
-    if name not in _raw_sounds:
+def play_sound(name, loops=0, force=False):
+    if name not in raw_sounds:
         return
-    sound = _raw_sounds[name]
-    sound.play(loops=loops) 
 
-    duration = SOUND_DURATIONS.get(name, None)
-    if duration:
-        def stop_sound():
-            pygame.time.wait(duration) 
-            sound.stop()
-        threading.Thread(target=stop_sound, daemon=True).start()
+    sound = raw_sounds[name]
+
+    if name == 'move':
+        if name not in _sound_channels:
+            _sound_channels[name] = pygame.mixer.find_channel()
+        channel = _sound_channels[name]
+        if channel is not None and not channel.get_busy():
+            channel.play(sound, loops=-1)
+    else:
+        sound.play(loops=loops)
+
+def stop_sound(name):
+    channel = _sound_channels.get(name)
+    if channel and channel.get_busy():
+        channel.stop()
+
 
 
 sounds = {
     'play': play_sound,
-    'raw': _raw_sounds,  
+    'stop': stop_sound,
+    'raw': raw_sounds
 }

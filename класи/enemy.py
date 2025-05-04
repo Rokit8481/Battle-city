@@ -29,7 +29,7 @@ class EnemyTank(pygame.sprite.Sprite):
         self.rect.inflate_ip(-10, -10)
 
         self.last_shot = pygame.time.get_ticks()
-        self.shot_cooldown = 2500
+        self.shot_cooldown = 1750
         self.last_dir_change = pygame.time.get_ticks()
         self.dir_change_interval = 1000
 
