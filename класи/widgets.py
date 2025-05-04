@@ -59,7 +59,6 @@ class Screens:
         self.fps = 60
         self.selected_level = 1
         self.music_on = True
-        self.sfx_on = True
         self.game = game_reference
 
     def wait_for_key(self):
