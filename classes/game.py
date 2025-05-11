@@ -1,5 +1,3 @@
-#game.py
-
 import pygame
 pygame.init()
 
@@ -9,15 +7,15 @@ UI_PANEL_HEIGHT = 100
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT + UI_PANEL_HEIGHT))
 pygame.display.set_caption("Battle City")
 
-from levels import level_map, level2, level3, level4, level5, level6, level7, level8, level9, level10
 from assets import TERRAIN_IMAGE, BONUS_IMAGES, BULLET_IMAGES, sounds
 from player import PlayerTank
 from enemy import EnemyTank
 from bullets import PlayerBullet
-from map import GameMap
+from map import GameMap, load_levels_from_json
 from widgets import Screens
 
-LEVELS = [level_map, level2, level3, level4, level5, level6, level7, level8, level9, level10]
+# Завантажуємо всі рівні з JSON
+LEVELS = load_levels_from_json()
 
 class Game:
     def __init__(self):
@@ -25,25 +23,24 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.playing = False
-        self.level_index = 0  # Поточний рівень (0 = перший)
+        self.level_index = 0
 
         self.background = pygame.transform.scale(TERRAIN_IMAGE, (SCREEN_WIDTH, SCREEN_HEIGHT + UI_PANEL_HEIGHT))
         self.screens = Screens(self.screen, game_reference=self)
         if self.screens.music_on:
             sounds['play']('background', loops=-1)
 
-
-
         self.player = None
         self.enemies = pygame.sprite.Group()
         self.player_bullets = pygame.sprite.Group()
         self.enemy_bullets = pygame.sprite.Group()
-        self.map = None  # буде ініціалізовано в new()
+        self.map = None
 
     def new(self, level=None):
         if level is not None:
-            self.level_index = level - 1  # -1 бо індексація з 0
-        level_data = LEVELS[self.level_index]
+            self.level_index = level - 1
+
+        level_data = LEVELS[self.level_index] 
 
         self.all_sprites = pygame.sprite.Group()
         self.enemies.empty()
@@ -60,8 +57,7 @@ class Game:
 
         for (ex, ey) in self.map.get_enemy_spawns():
             enemy = EnemyTank(
-                ex, ey,
-                30,
+                ex, ey, 30,
                 player=self.player,
                 enemy_bullets_group=self.enemy_bullets,
                 walls_group=self.map.walls,
@@ -73,6 +69,8 @@ class Game:
 
         self.playing = True
         self.run()
+
+
 
     def run(self):
         while self.playing:
@@ -104,9 +102,8 @@ class Game:
 
     def draw_ui(self):
         panel_y = SCREEN_HEIGHT
-        panel_height = 100
-        pygame.draw.rect(self.screen, (30, 30, 30), (0, panel_y, SCREEN_WIDTH, panel_height))
-        pygame.draw.rect(self.screen, (80, 80, 80), (0, panel_y, SCREEN_WIDTH, panel_height), 2)
+        pygame.draw.rect(self.screen, (30, 30, 30), (0, panel_y, SCREEN_WIDTH, UI_PANEL_HEIGHT))
+        pygame.draw.rect(self.screen, (80, 80, 80), (0, panel_y, SCREEN_WIDTH, UI_PANEL_HEIGHT), 2)
 
         heart_icon = pygame.transform.scale(BONUS_IMAGES["heart"], (30, 30))
         self.screen.blit(heart_icon, (10, panel_y + 10))
@@ -127,18 +124,14 @@ class Game:
 
                 elapsed = pygame.time.get_ticks() - active[1] 
                 remaining = max(0, self.player.bonus_durations[bonus_type] - elapsed) 
-
                 label = f"{remaining / 1000:.1f}s" 
                 color = (150, 255, 150) if bonus_type == "shield" else (255, 200, 100) if bonus_type == "bullet_upgrade" else (150, 200, 255)
                 self.draw_text(label, 16, icon_x + icon_size + 5, icon_y + 5, color)
-
 
         bullet_icon = BULLET_IMAGES["upgraded_icon"] if self.player.upgraded else BULLET_IMAGES["normal_icon"]
         bullet_icon = pygame.transform.scale(bullet_icon, (30, 30))
         self.screen.blit(bullet_icon, (SCREEN_WIDTH - 80, panel_y + 10))
         self.draw_text("BULLET", 16, SCREEN_WIDTH - 85, panel_y + 45)
-
-
 
     def update(self):
         self.player.update()
@@ -175,13 +168,10 @@ class Game:
         if not self.enemies:
             self.end_game("You Win")
 
-
-
-
     def end_game(self, result):
         self.playing = False
         if result == "Game Over":
-            sounds['play']('hit_tank')  # Використовуємо звук для гри "Game Over"
+            sounds['play']('hit_tank')
             self.screens.show_game_over_screen()
         else:
             if self.level_index < len(LEVELS) - 1:
@@ -190,7 +180,6 @@ class Game:
                 self.new(self.level_index + 1)
             else:
                 self.screens.show_win_screen()
-
 
     def draw(self):
         self.screen.blit(self.background, (0, 0))
